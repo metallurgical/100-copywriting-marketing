@@ -74,6 +74,22 @@
             -webkit-text-fill-color: transparent;
         }
     </style>
+
+    <!-- Google Analytics 4 — production only -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        var GA_ENABLED = location.hostname !== 'localhost' && location.hostname !== '127.0.0.1';
+        if (GA_ENABLED) {
+            var gaScript = document.createElement('script');
+            gaScript.async = true;
+            gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX';
+            document.head.appendChild(gaScript);
+            gtag('config', 'G-XXXXXXXXXX');
+        }
+    </script>
 </head>
 
 <body class="bg-dark-900 text-slate-300 font-sans antialiased selection:bg-brand-500 selection:text-white">
@@ -88,6 +104,7 @@
                 </div>
                 <div class="flex-shrink-0">
                     <a href="#payment"
+                        onclick="trackEvent('cta_click', {location: 'navbar'})"
                         class="inline-block bg-brand-600 hover:bg-brand-500 text-white px-4 sm:px-5 py-2 rounded-full text-sm sm:text-base font-medium whitespace-nowrap transition-all transform hover:scale-105 shadow-[0_0_15px_rgba(234,88,12,0.5)]">Beli
                         Sekarang</a>
                 </div>
@@ -128,6 +145,7 @@
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         <a href="#payment"
+                            onclick="trackEvent('cta_click', {location: 'hero'})"
                             class="bg-brand-600 hover:bg-brand-500 text-white px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 hover:-translate-y-1 shadow-[0_10px_40px_-10px_rgba(234,88,12,0.8)] flex items-center justify-center gap-2">
                             Dapatkan Sekarang
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
@@ -379,6 +397,7 @@
                     <div class="mt-12 text-center border-t border-white/10 pt-8">
                         <a href="https://wa.me/60189003427?text=Hai%2C%20saya%20sudah%20buat%20bayaran%20untuk%20Ebook%20Copywriting%20RM5.00."
                             target="_blank"
+                            onclick="trackEvent('whatsapp_click', {})"
                             class="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#1ebd5a] text-white px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-[0_10px_30px_-10px_rgba(37,211,102,0.6)]">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -426,6 +445,12 @@
             navigator.clipboard.writeText(accNum).then(() => {
                 alert('Nombor akaun disalin: ' + accNum);
             });
+        }
+
+        function trackEvent(eventName, params) {
+            if (GA_ENABLED && typeof gtag !== 'undefined') {
+                gtag('event', eventName, params || {});
+            }
         }
     </script>
 </body>
